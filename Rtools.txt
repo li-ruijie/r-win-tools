@@ -3,7 +3,7 @@
 This is the Rtools.txt file, which will be installed in the main
 Rtools directory. See also the README.txt file there, which describes
 the origin of some of the tools. The tools installed in the
-Rtools\MinGW directory are from the MinGW distribution.  
+Rtools\gcc-4.6.3 directory are from the MinGW-w64 distribution.  
 
                                 CYGWIN
 			  
@@ -24,11 +24,11 @@ TO BUILD R, you need these plus item 3 below (Inno Setup).
 
 Finally, the Rtools installer will optionally edit your PATH variable as follows:
 
-PATH=c:\Rtools\bin;c:\Rtools\MinGW\bin;c:\R\bin;<others>
+PATH=c:\Rtools\bin;c:\Rtools\gcc-4.6.3\bin;<others>
 
 (where you will substitute appropriate directories for the ones listed
 above, but please keep the path in the same order as shown. LaTeX and
-the HTML Help Workshop should be installed among the "others".)
+R itself should be installed among the "others".)
 
                            REMAINING ITEMS
 
@@ -46,44 +46,27 @@ to build the R installer.
 
                                VERSIONS
 			
-This installer includes the following versions of the MinGW packages, obtained from
-http://sourceforge.net/projects/mingw/files/:
-
-     binutils-2.20.51-1-mingw32-bin.tar.lzma
-     gcc-c++-4.5.0-1-mingw32-bin.tar.lzma
-     gcc-core-4.5.0-1-mingw32-bin.tar.lzma
-     gcc-fortran-4.5.0-1-mingw32-bin.tar.lzma
-     libgcc-4.5.0-1-mingw32-dll-1.tar.lzma
-     libgmp-5.0.1-1-mingw32-dll-10.tar.lzma
-     libgomp-4.5.0-1-mingw32-dll-1.tar.lzma
-     libmpc-0.8.1-1-mingw32-dll-2.tar.lzma
-     libmpfr-2.4.1-1-mingw32-dll-1.tar.lzma
-     libssp-4.5.0-1-mingw32-dll-0.tar.lzma
-     mingwrt-3.18-mingw32-dev.tar.gz
-     mingwrt-3.18-mingw32-dll.tar.gz
-     w32api-3.15-1-mingw32-dev.tar.lzma
-    
-It also includes the MinGW-64 version of gcc pre-4.6.3, compiled by
+This installer includes the MinGW-64 version of gcc pre-4.6.3, compiled by
 Brian Ripley, obtained from his http://www.stats.ox.ac.uk/pub/Rtools/
-web page as multi.zip.
+web page as multi.zip.  It also contains version 2.0.1 of their toolchain.
 
 The Cygwin tools and DLLs were updated on March 25, 2011.  They are taken from
     
-    base-files 4.0-6
-    coreutils 8.10-1
-    cygwin 1.7.8-1
-    diffutils 2.9-1
-    findutils 4.5.9-1
-    gawk 3.1.8-1
+    base-cygwin 3.1-1
+    coreutils 8.15-1
+    cygwin 1.7.15-1
+    diffutils 3.2-1
+    findutils 4.5.9-2
+    gawk 4.0.1-1
     grep 2.6.3-1
     gzip 1.4-1
-    texinfo 4.13-3
+    texinfo 4.13-4
     
 The bitmap libraries are based on the following versions:
 
-    jpegsrc.v8c
-    libpng-1.5.8
-    tiff-3.9.1
+    jpegsrc.v9
+    libpng-1.5.13
+    tiff-4.0.3
     
 Tcl/Tk is version 8.5.8.
 
