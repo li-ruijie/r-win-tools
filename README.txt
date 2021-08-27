@@ -1,8 +1,8 @@
 This file describes the Rtools/bin collection, a set of tools to help
 build and test R for Windows.
 
-cat cp cut date diff echo egrep expr find, grep gzip ls makeinfo mkdir
-mv rm rsync sed sort texindex touch
+basename cat cmp comm cp cut date diff du echo expr gzip ls makeinfo
+mkdir mv rm rsync sed sort texindex touch uniq
 
 These are extracted from the cygwin collection
 (http://sources.redhat.com/cygwin and several mirrors). 
@@ -31,9 +31,9 @@ tested:  we prefer the Rtools utilities to the Windows ones.
 Extras
 ======
 
-Also included are basename, comm, gawk, head and wc (which used to be
-needed), as well as cmp, ln, od, rmdir, tr and uniq which are needed
-by some configure scripts.
+Also included are egrep, find, gawk, grep, head and wc (which used to be
+needed), as well as ln, od, rmdir and tr which are needed by some
+configure scripts.
 
 md5sum can be used to create checksums, or check checksum files.
 

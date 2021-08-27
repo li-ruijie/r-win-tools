@@ -1,8 +1,9 @@
 
-Makefiles for  libpng version 1.4.1 - February 25, 2010
+Makefiles for  libpng version 1.5.1 - February 3, 2011
 
+pnglibconf.h.prebuilt       =>  Stores configuration settings
  makefile.linux    =>  Linux/ELF makefile
-                       (gcc, creates libpng14.so.14.1.4.1)
+                       (gcc, creates libpng15.so.15.1.5.1)
  makefile.gcc      =>  Generic makefile (gcc, creates static libpng.a)
  makefile.knr      =>  Archaic UNIX Makefile that converts files with
                        ansi2knr (Requires ansi2knr.c from
@@ -15,12 +16,11 @@ Makefiles for  libpng version 1.4.1 - February 25, 2010
  makefile.beos     =>  beos makefile
  makefile.bor      =>  Borland makefile (uses bcc)
  makefile.cegcc    =>  minge32ce for Windows CE makefile
- makefile.cygwin   =>  Cygwin/gcc makefile
  makefile.darwin   =>  Darwin makefile, can use on MacosX
  makefile.dec      =>  DEC Alpha UNIX makefile
  makefile.dj2      =>  DJGPP 2 makefile
  makefile.elf      =>  Linux/ELF makefile symbol versioning,
-                       gcc, creates libpng14.so.14.1.4.1)
+                       (gcc, creates libpng15.so.15.1.5.1)
  makefile.freebsd  =>  FreeBSD makefile
  makefile.gcc      =>  Generic gcc makefile
  makefile.hpgcc    =>  HPUX makefile using gcc
@@ -28,20 +28,19 @@ Makefiles for  libpng version 1.4.1 - February 25, 2010
  makefile.hp64     =>  HPUX (10.20 and 11.00) makefile, 64-bit
  makefile.ibmc     =>  IBM C/C++ version 3.x for Win32 and OS/2 (static)
  makefile.intel    =>  Intel C/C++ version 4.0 and later
- makefile.mingw    =>  Mingw makefile
  makefile.mips     =>  MIPS makefile
  makefile.msc      =>  Microsoft C makefile
  makefile.netbsd   =>  NetBSD/cc makefile, makes libpng.so.
  makefile.openbsd  =>  OpenBSD makefile
- makefile.os2      =>  OS/2 Makefile (gcc and emx, requires pngos2.def)
+ makefile.os2      =>  OS/2 Makefile (gcc and emx, requires libpng.def)
  makefile.sco      =>  For SCO OSr5  ELF and Unixware 7 with Native cc
  makefile.sggcc    =>  Silicon Graphics (gcc,
-                       creates libpng14.so.14.1.4.1)
+                       creates libpng15.so.15.1.5.1)
  makefile.sgi      =>  Silicon Graphics IRIX makefile (cc, creates static lib)
  makefile.solaris  =>  Solaris 2.X makefile (gcc,
-                       creates libpng14.so.14.1.4.1)
+                       creates libpng15.so.15.1.5.1)
  makefile.so9      =>  Solaris 9 makefile (gcc,
-                       creates libpng14.so.14.1.4.1)
+                       creates libpng15.so.15.1.5.1)
  makefile.std      =>  Generic UNIX makefile (cc, creates static libpng.a)
  makefile.sunos    =>  Sun makefile
  makefile.32sunu   =>  Sun Ultra 32-bit makefile
@@ -54,14 +53,25 @@ Makefiles for  libpng version 1.4.1 - February 25, 2010
                        (Requires SCOPTIONS, copied from scripts/SCOPTIONS.ppc)
 
 Other supporting scripts:
+ README.txt        =>  This file
  descrip.mms       =>  VMS makefile for MMS or MMK
  libpng-config-body.in => used by several makefiles to create libpng-config
  libpng-config-head.in => used by several makefiles to create libpng-config
  libpng.pc.in      =>  Used by several makefiles to create libpng.pc
- pngos2.def        =>  OS/2 module definition file used by makefile.os2
- pngwin.def        =>  Module definitions for makefile.cygwin and mingw
- png32ce.def       =>  Module definition file used by makefile.cegcc
  pngwin.rc         =>  Used by the visualc6 and visualc71 projects.
+ pngwin.def        =>  Used by makefile.os2
+ pngwin.dfn        =>  Used to maintain pngwin.def
  SCOPTIONS.ppc     =>  Used with smakefile.ppc
+
+checksym.awk       =>  Used for maintaining pnglibconf.h
+def.dfn            =>  Used for maintaining pnglibconf.h
+options.awk        =>  Used for maintaining pnglibconf.h
+pnglibconf.dfa     =>  Used for maintaining pnglibconf.h
+pnglibconf.mak     =>  Used for maintaining pnglibconf.h
+sym.dfn            =>  Used for symbol versioning
+symbols.def        =>  Used for symbol versioning
+symbols.dfn        =>  Used for symbol versioning
+vers.dfn           =>  Used for symbol versioning
+
 
 Further information can be found in comments in the individual makefiles.

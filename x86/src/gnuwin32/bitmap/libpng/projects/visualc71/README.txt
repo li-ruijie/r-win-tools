@@ -5,6 +5,9 @@ Copyright (C) 2004 Simon-Pierre Cadieux.
 This code is released under the libpng license.
 For conditions of distribution and use, see copyright notice in png.h
 
+NOTE: This project will be removed from libpng-1.5.0.  It has
+been replaced with the "vstudio" project.
+
 Assumptions:
 * The libpng source files are in ..\..
 * The zlib source files are in ..\..\..\zlib
@@ -34,9 +37,9 @@ To use:
 
 This project builds the libpng binaries as follows:
 
-* Win32_DLL_Release\libpng14.dll      DLL build
-* Win32_DLL_Debug\libpng14d.dll       DLL build (debug version)
-* Win32_DLL_VB\libpng14vb.dll         DLL build for Visual Basic, using stdcall
+* Win32_DLL_Release\libpng15.dll      DLL build
+* Win32_DLL_Debug\libpng15d.dll       DLL build (debug version)
+* Win32_DLL_VB\libpng15vb.dll         DLL build for Visual Basic, using stdcall
 * Win32_LIB_Release\libpng.lib        static build
 * Win32_LIB_Debug\libpngd.lib         static build (debug version)
 
