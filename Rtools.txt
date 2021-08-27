@@ -79,12 +79,11 @@ The Cygwin tools and DLLs were updated on February 18, 2009.  They are taken fro
     
 The bitmap libraries are based on the following versions:
 
-    jpegsrc.v6b (For R 2.9.x)
-    jpegsrc.v7  (For R 2.10.x)
-    libpng-1.2.40
+    jpegsrc.v8a
+    libpng-1.4.1
     tiff-3.8.2
     
-Tcl/Tk is version 8.5.6.
+Tcl/Tk is version 8.5.8.
 
 tar is a locally modified version of tar version 1.21.
 
