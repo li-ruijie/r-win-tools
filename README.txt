@@ -1,64 +1,30 @@
-This file describes the Rtools/bin collection, a set of tools to help
-build and test R for Windows.
+# Rtools 3.5 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/rwinlib/rtools35)](https://ci.appveyor.com/project/jeroen/rtools35)
 
-basename cat cmp comm cp cut cygpath date diff du echo expr gzip ls makeinfo
-mkdir mv rm rsync sed sort texindex touch uniq
+> Windows Toolchain and Build Utilities for R
 
-These are extracted from the cygwin collection
-(http://sources.redhat.com/cygwin and several mirrors). 
+This repository contains the source files for building the Rtools installer. Official releases can be downloaded from the [Rtools homepage on CRAN](https://cran.r-project.org/bin/windows/Rtools/). The original collection was put together by Prof. Brian Ripley and Duncan Murdoch; it is currently maintained by Jeroen Ooms.
 
-file is compiled from the sources, to look for the "magic" file in 
-the same directory as file.exe.
+## Contents
 
-sh is an older version of the Cygwin sh, from before they started
-to require Unix-style line endings in scripts.
+The same Rtools bundle is used both for building R itself as well as compiling R packages from source. Most users only need the latter, so the standard installation type will install:
 
-make is compiled from the sources, altered to use sh.exe in the path 
-if this exists (rather than /bin/sh.exe).
+ - 32 and 64 bit mingw-w64 [toolchains](toolchains/#readme) based on gcc 4.9.3
+ - Build [utilities](https://github.com/rwinlib/utils): make, bash, tar, etc
 
-tar is compiled from the sources, altered to accept Windows drives
-in the path specification.
+In addition, Rtools has optional extras for building R itself:
 
-zip, unzip from the Info-ZIP collection.
+ - [TexInfo5](https://github.com/rwinlib/texinfo5) for building manuals
+ - A copy of [libicu55](https://github.com/rwinlib/icu) static libs
+ - [TclTK 8.6](https://github.com/rwinlib/tcltk) required for building the base R package tcltk
 
-texinfo5 (Perl source) is compiled from the sources.
+For more information about building R itself see the [rwinlib/base](https://github.com/rwinlib/base#readme) repository.
 
-gdb and gdb64 were compiled for inclusion with the gcc 4.6.3 compiler;
-both 32 and 64 bit versions are named gdb with the gcc 4.9.3 compiler.
+## Build Rtools
 
-Please note that find and sort have the same names as Windows
-utilities; if you want to access the Windows ones while ours are on
-the path, you could rename our utilities and edit the FIND and SORT
-macros in src/gnuwin32/MkRules, but note that this option is rarely
-tested:  we prefer the Rtools utilities to the Windows ones.
+The Rtools installer can be built from [rtools.iss](rtools.iss) using [InnoSetup](http://www.jrsoftware.org/isdl.php#stable). Either use the GUI or build from the command line:
 
+```bat
+"C:\Program Files (x86)\Inno Setup 5\iscc.exe" rtools.iss
+```
 
-Extras
-======
-
-Also included are egrep, find, gawk, grep, head and wc (which used to be
-needed), as well as ln, od, rmdir and tr which are needed by some
-configure scripts.
-
-md5sum can be used to create checksums, or check checksum files.
-
-pedump is very useful for examining DLLs for imports and exports.
-
-
-Sources
-=======
-
-The current version of this archive will be at
-
-<CRAN mirror>/bin/windows/Rtools
-
-where <CRAN mirror> is your local CRAN mirror from the list at
-http://cran.r-project.org/mirrors.html.
-
-
-License
-=======
-
-Many of these files are licensed under the GPL; see the file
-COPYING.  For the specific license for any particular file, 
-see the source.
+All of this is automated on [AppVeyor](https://ci.appveyor.com/project/jeroen/rtools35).
