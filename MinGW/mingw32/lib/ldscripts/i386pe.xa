@@ -1,6 +1,6 @@
 /* Script for ld --enable-auto-import: Like the default script except read only data is placed into .data  */
 OUTPUT_FORMAT(pei-i386)
-SEARCH_DIR("/usr/local/mingw32/lib"); SEARCH_DIR("/usr/local/lib"); SEARCH_DIR("/lib"); SEARCH_DIR("/usr/lib");
+SEARCH_DIR("=/usr/local/lib"); SEARCH_DIR("=/lib"); SEARCH_DIR("=/usr/lib");
 SECTIONS
 {
   /* Make the virtual address and file offset synced if the alignment is
@@ -12,6 +12,7 @@ SECTIONS
      *(.init)
     *(.text)
     *(SORT(.text$*))
+     *(.text.*)
     *(.glue_7t)
     *(.glue_7)
      ___CTOR_LIST__ = .; __CTOR_LIST__ = . ;
@@ -43,12 +44,15 @@ SECTIONS
   }
   .rdata BLOCK(__section_alignment__) :
   {
-     *(.eh_frame)
     ___RUNTIME_PSEUDO_RELOC_LIST__ = .;
     __RUNTIME_PSEUDO_RELOC_LIST__ = .;
     *(.rdata_runtime_pseudo_reloc)
     ___RUNTIME_PSEUDO_RELOC_LIST_END__ = .;
     __RUNTIME_PSEUDO_RELOC_LIST_END__ = .;
+  }
+  .eh_frame BLOCK(__section_alignment__) :
+  {
+    *(.eh_frame)
   }
   .pdata BLOCK(__section_alignment__) :
   {
@@ -71,6 +75,8 @@ SECTIONS
     *(.debug$T)
     *(.debug$F)
     *(.drectve)
+     *(.note.GNU-stack)
+     *(.gnu.lto_*)
   }
   .idata BLOCK(__section_alignment__) :
   {
@@ -147,6 +153,10 @@ SECTIONS
   .debug_pubnames BLOCK(__section_alignment__) (NOLOAD) :
   {
     *(.debug_pubnames)
+  }
+  .debug_pubtypes BLOCK(__section_alignment__) (NOLOAD) :
+  {
+    *(.debug_pubtypes)
   }
   /* DWARF 2.  */
   .debug_info BLOCK(__section_alignment__) (NOLOAD) :

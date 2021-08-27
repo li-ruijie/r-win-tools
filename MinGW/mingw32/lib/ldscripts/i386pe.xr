@@ -1,6 +1,6 @@
 /* Script for ld -r: link without relocation */
 OUTPUT_FORMAT(pe-i386)
-SEARCH_DIR("/usr/local/mingw32/lib"); SEARCH_DIR("/usr/local/lib"); SEARCH_DIR("/lib"); SEARCH_DIR("/usr/lib");
+SEARCH_DIR("=/usr/local/lib"); SEARCH_DIR("=/lib"); SEARCH_DIR("=/usr/lib");
 SECTIONS
 {
   .text  :
@@ -25,6 +25,10 @@ SECTIONS
   {
     *(.rdata)
     *(.rdata_runtime_pseudo_reloc)
+  }
+  .eh_frame  :
+  {
+    *(.eh_frame)
   }
   .pdata  :
   {
@@ -90,6 +94,10 @@ SECTIONS
   .debug_pubnames   :
   {
     *(.debug_pubnames)
+  }
+  .debug_pubtypes   :
+  {
+    *(.debug_pubtypes)
   }
   /* DWARF 2.  */
   .debug_info   :

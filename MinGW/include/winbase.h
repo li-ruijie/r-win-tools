@@ -139,8 +139,16 @@ extern "C" {
 #define PROGRESS_QUIET	3
 #define CALLBACK_CHUNK_FINISHED	0
 #define CALLBACK_STREAM_SWITCH	1
-#define COPY_FILE_FAIL_IF_EXISTS	1
-#define COPY_FILE_RESTARTABLE	2
+#define COPY_FILE_FAIL_IF_EXISTS              0x0001
+#define COPY_FILE_RESTARTABLE                 0x0002
+#define COPY_FILE_OPEN_SOURCE_FOR_WRITE       0x0004
+#if (_WIN32_WINNT > 0x0500)
+#define COPY_FILE_ALLOW_DECRYPTED_DESTINATION 0x0008
+#if (_WIN32_WINNT > 0x0501)
+#define COPY_FILE_COPY_SYMLINK                0x0800
+#define COPY_FILE_NO_BUFFERING                0x1000
+#endif
+#endif
 #define OFS_MAXPATHNAME 128
 #define FILE_MAP_ALL_ACCESS     0xf001f
 #define FILE_MAP_READ   4
@@ -206,6 +214,7 @@ extern "C" {
 #if (_WIN32_WINNT >= 0x0500)
 #define FILE_FLAG_FIRST_PIPE_INSTANCE	524288
 #endif
+#define SYMBOLIC_LINK_FLAG_DIRECTORY	0x1
 #define CLRDTR 6
 #define CLRRTS 4
 #define SETDTR 5
@@ -217,6 +226,7 @@ extern "C" {
 #define STILL_ACTIVE 0x103
 #define FIND_FIRST_EX_CASE_SENSITIVE 1
 #define SCS_32BIT_BINARY 0
+#define SCS_64BIT_BINARY 6
 #define SCS_DOS_BINARY 1
 #define SCS_OS216_BINARY 5
 #define SCS_PIF_BINARY 3
@@ -568,6 +578,17 @@ extern "C" {
 #define PROCESS_DEP_ENABLE 1
 #define PROCESS_DEP_DISABLE_ATL_THUNK_EMULATION 2
 #endif
+#if (_WIN32_WINNT >= 0x0600)
+/* http://msdn.microsoft.com/en-us/library/aa363866%28VS.85%29.aspx */
+#define SYMBOLIC_LINK_FLAG_DIRECTORY 0x1
+/* http://msdn.microsoft.com/en-us/library/aa364962%28VS.85%29.aspx */
+#define FILE_NAME_NORMALIZED 0x0
+#define FILE_NAME_OPENED 0x8
+#define VOLUME_NAME_DOS 0x0
+#define VOLUME_NAME_GUID 0x1
+#define VOLUME_NAME_NONE 0x4
+#define VOLUME_NAME_NT 0x2
+#endif /* (_WIN32_WINNT >= 0x0600) */
 
 #ifndef RC_INVOKED
 typedef struct _FILETIME {
@@ -586,6 +607,86 @@ typedef struct _BY_HANDLE_FILE_INFORMATION {
 	DWORD	nFileIndexHigh;
 	DWORD	nFileIndexLow;
 } BY_HANDLE_FILE_INFORMATION,*LPBY_HANDLE_FILE_INFORMATION;
+#if (_WIN32_WINNT >= 0x0600)
+/* http://msdn.microsoft.com/en-us/library/aa364217%28VS.85%29.aspx */
+typedef struct _FILE_BASIC_INFO {
+	LARGE_INTEGER	CreationTime;
+	LARGE_INTEGER	LastAccessTime;
+	LARGE_INTEGER	LastWriteTime;
+	LARGE_INTEGER	ChangeTime;
+	DWORD	FileAttributes;
+} FILE_BASIC_INFO,*PFILE_BASIC_INFO,*LPFILE_BASIC_INFO;
+/* http://msdn.microsoft.com/en-us/library/aa364401%28VS.85%29.aspx */
+typedef struct _FILE_STANDARD_INFO {
+	LARGE_INTEGER	AllocationSize;
+	LARGE_INTEGER	EndOfFile;
+	DWORD	NumberOfLinks;
+	BOOL	DeletePending;
+	BOOL	Directory;
+} FILE_STANDARD_INFO,*PFILE_STANDARD_INFO,*LPFILE_STANDARD_INFO;
+/* http://msdn.microsoft.com/en-us/library/aa364388%28v=VS.85%29.aspx */
+typedef struct _FILE_NAME_INFO {
+	DWORD	FileNameLength;
+	WCHAR	FileName[1];
+} FILE_NAME_INFO,*PFILE_NAME_INFO,*LPFILE_NAME_INFO;
+/* http://msdn.microsoft.com/en-us/library/aa364406%28v=VS.85%29.aspx */
+typedef struct _FILE_STREAM_INFO {
+	DWORD	NextEntryOffset;
+	DWORD	StreamNameLength;
+	LARGE_INTEGER	StreamSize;
+	LARGE_INTEGER	StreamAllocationSize;
+	WCHAR	StreamName[1];
+} FILE_STREAM_INFO,*PFILE_STREAM_INFO,*LPFILE_STREAM_INFO;
+/* http://msdn.microsoft.com/en-us/library/aa364220%28v=VS.85%29.aspx */
+typedef struct _FILE_COMPRESSION_INFO {
+	LARGE_INTEGER	CompressedFileSize;
+	WORD	CompressionFormat;
+	UCHAR	CompressionUnitShift;
+	UCHAR	ChunkShift;
+	UCHAR	ClusterShift;
+	UCHAR	Reserved[3];
+} FILE_COMPRESSION_INFO,*PFILE_COMPRESSION_INFO,*LPFILE_COMPRESSION_INFO;
+/* http://msdn.microsoft.com/en-us/library/aa364216%28v=VS.85%29.aspx */
+typedef struct _FILE_ATTRIBUTE_TAG_INFO {
+	DWORD	FileAttributes;
+	DWORD	ReparseTag;
+} FILE_ATTRIBUTE_TAG_INFO,*PFILE_ATTRIBUTE_TAG_INFO,*LPFILE_ATTRIBUTE_TAG_INFO;
+/* http://msdn.microsoft.com/en-us/library/aa364226%28v=VS.85%29.aspx */
+typedef struct _FILE_ID_BOTH_DIR_INFO {
+	DWORD	NextEntryOffset;
+	DWORD	FileIndex;
+	LARGE_INTEGER	CreationTime;
+	LARGE_INTEGER	LastAccessTime;
+	LARGE_INTEGER	LastWriteTime;
+	LARGE_INTEGER	ChangeTime;
+	LARGE_INTEGER	EndOfFile;
+	LARGE_INTEGER	AllocationSize;
+	DWORD	FileAttributes;
+	DWORD	FileNameLength;
+	DWORD	EaSize;
+	CCHAR	ShortNameLength;
+	WCHAR	ShortName[12];
+	LARGE_INTEGER	FileId;
+	WCHAR	FileName[1];
+} FILE_ID_BOTH_DIR_INFO,*PFILE_ID_BOTH_DIR_INFO,*LPFILE_ID_BOTH_DIR_INFO;
+/* http://msdn.microsoft.com/en-us/library/dd979524%28v=VS.85%29.aspx */
+typedef struct _FILE_REMOTE_PROTOCOL_INFO {
+	USHORT StructureVersion;
+	USHORT StructureSize;
+	ULONG  Protocol;
+	USHORT ProtocolMajorVersion;
+	USHORT ProtocolMinorVersion;
+	USHORT ProtocolRevision;
+	USHORT Reserved;
+	ULONG  Flags;
+	struct {
+		ULONG	Reserved[8];
+	} GenericReserved;
+	struct {
+		ULONG	Reserved[16];
+	} ProtocolSpecificReserved;
+} FILE_REMOTE_PROTOCOL_INFO,*PFILE_REMOTE_PROTOCOL_INFO,*LPFILE_REMOTE_PROTOCOL_INFO;
+#endif /* (_WIN32_WINNT >= 0x0600) */
 typedef struct _DCB {
 	DWORD DCBlength;
 	DWORD BaudRate;
@@ -732,8 +833,13 @@ typedef struct _DEBUG_EVENT {
 typedef struct _OVERLAPPED {
 	ULONG_PTR Internal;
 	ULONG_PTR InternalHigh;
+	union {
+		struct {
 	DWORD Offset;
 	DWORD OffsetHigh;
+	};
+	PVOID Pointer;
+	};
 	HANDLE hEvent;
 } OVERLAPPED,*POVERLAPPED,*LPOVERLAPPED;
 typedef struct _STARTUPINFOA {
@@ -1062,13 +1168,31 @@ typedef enum _COMPUTER_NAME_FORMAT {
 #if (_WIN32_WINNT >= 0x0500 || _WIN32_WINDOWS >= 0x0410)
 typedef DWORD EXECUTION_STATE;
 #endif
-#if (_WIN32_WINNT >= 0x0601)
+#if (_WIN32_WINNT >= 0x0600)
 typedef enum _DEP_SYSTEM_POLICY_TYPE {
 	AlwaysOn,
 	AlwaysOff,
 	OptIn,
 	OptOut 
 } DEP_SYSTEM_POLICY_TYPE;
+/* http://msdn.microsoft.com/en-us/library/aa364228%28v=VS.85%29.aspx */
+typedef enum _FILE_INFO_BY_HANDLE_CLASS {
+  FileBasicInfo,
+  FileStandardInfo,
+  FileNameInfo,
+  FileRenameInfo,
+  FileDispositionInfo,
+  FileAllocationInfo,
+  FileEndOfFileInfo,
+  FileStreamInfo,
+  FileCompressionInfo,
+  FileAttributeTagInfo,
+  FileIdBothDirectoryInfo,
+  FileIdBothDirectoryRestartInfo,
+  FileIoPriorityHintInfo,
+  FileRemoteProtocolInfo,
+  MaximumFileInfoByHandlesClass
+} FILE_INFO_BY_HANDLE_CLASS,*PFILE_INFO_BY_HANDLE_CLASS;
 #endif
 
 typedef DWORD(WINAPI *LPPROGRESS_ROUTINE)(LARGE_INTEGER,LARGE_INTEGER,LARGE_INTEGER,LARGE_INTEGER,DWORD,DWORD,HANDLE,HANDLE,LPVOID);
@@ -1259,8 +1383,19 @@ WINBASEAPI BOOL WINAPI CreateProcessWithLogonW (LPCWSTR,LPCWSTR,LPCWSTR,DWORD,
 #define LOGON_NETCREDENTIALS_ONLY 0x00000002
 #endif
 WINBASEAPI HANDLE WINAPI CreateRemoteThread(HANDLE,LPSECURITY_ATTRIBUTES,DWORD,LPTHREAD_START_ROUTINE,LPVOID,DWORD,LPDWORD);
+#if (_WIN32_WINNT >= 0x0500)
+WINBASEAPI BOOL WINAPI CreateRestrictedToken(HANDLE,DWORD,DWORD,PSID_AND_ATTRIBUTES,DWORD,PLUID_AND_ATTRIBUTES,DWORD,PSID_AND_ATTRIBUTES,PHANDLE);
+#define DISABLE_MAX_PRIVILEGE 1
+#define SANDBOX_INERT 2
+#define LUA_TOKEN 4
+#define WRITE_RESTRICTED 8
+#endif
 WINBASEAPI HANDLE WINAPI CreateSemaphoreA(LPSECURITY_ATTRIBUTES,LONG,LONG,LPCSTR);
 WINBASEAPI HANDLE WINAPI CreateSemaphoreW(LPSECURITY_ATTRIBUTES,LONG,LONG,LPCWSTR);
+#if (_WIN32_WINNT >= 0x0600)
+WINBASEAPI BOOL WINAPI CreateSymbolicLinkA(LPCSTR,LPCSTR,DWORD);
+WINBASEAPI BOOL WINAPI CreateSymbolicLinkW(LPCWSTR,LPCWSTR,DWORD);
+#endif
 WINBASEAPI DWORD WINAPI CreateTapePartition(HANDLE,DWORD,DWORD,DWORD);
 #if (_WIN32_WINNT >= 0x0500)
 WINBASEAPI HANDLE WINAPI CreateTimerQueue(void);
@@ -1444,9 +1579,9 @@ WINBASEAPI DWORD WINAPI GetDllDirectoryW(DWORD,LPWSTR);
 #endif
 WINBASEAPI UINT WINAPI GetDriveTypeA(LPCSTR);
 WINBASEAPI UINT WINAPI GetDriveTypeW(LPCWSTR);
-WINBASEAPI LPSTR WINAPI GetEnvironmentStrings(void);
-WINBASEAPI LPSTR WINAPI GetEnvironmentStringsA(void);
-WINBASEAPI LPWSTR WINAPI GetEnvironmentStringsW(void);
+WINBASEAPI LPCH WINAPI GetEnvironmentStrings(void);
+WINBASEAPI LPCH WINAPI GetEnvironmentStringsA(void);
+WINBASEAPI LPWCH WINAPI GetEnvironmentStringsW(void);
 WINBASEAPI DWORD WINAPI GetEnvironmentVariableA(LPCSTR,LPSTR,DWORD);
 WINBASEAPI DWORD WINAPI GetEnvironmentVariableW(LPCWSTR,LPWSTR,DWORD);
 WINBASEAPI BOOL WINAPI GetExitCodeProcess(HANDLE,PDWORD);
@@ -1456,6 +1591,10 @@ WINBASEAPI DWORD WINAPI GetFileAttributesW(LPCWSTR);
 WINBASEAPI BOOL WINAPI GetFileAttributesExA(LPCSTR,GET_FILEEX_INFO_LEVELS,PVOID);
 WINBASEAPI BOOL WINAPI GetFileAttributesExW(LPCWSTR,GET_FILEEX_INFO_LEVELS,PVOID);
 WINBASEAPI BOOL WINAPI GetFileInformationByHandle(HANDLE,LPBY_HANDLE_FILE_INFORMATION);
+#if (_WIN32_WINNT >= 0x0600)
+/* http://msdn.microsoft.com/en-us/library/aa364953%28VS.85%29.aspx */
+WINBASEAPI BOOL WINAPI GetFileInformationByHandleEx(HANDLE,FILE_INFO_BY_HANDLE_CLASS,LPVOID,DWORD);
+#endif
 WINBASEAPI BOOL WINAPI GetFileSecurityA(LPCSTR,SECURITY_INFORMATION,PSECURITY_DESCRIPTOR,DWORD,PDWORD);
 WINBASEAPI BOOL WINAPI GetFileSecurityW(LPCWSTR,SECURITY_INFORMATION,PSECURITY_DESCRIPTOR,DWORD,PDWORD);
 WINBASEAPI DWORD WINAPI GetFileSize(HANDLE,PDWORD);
@@ -1464,6 +1603,11 @@ WINBASEAPI BOOL WINAPI GetFileSizeEx(HANDLE,PLARGE_INTEGER);
 #endif
 WINBASEAPI BOOL WINAPI GetFileTime(HANDLE,LPFILETIME,LPFILETIME,LPFILETIME);
 WINBASEAPI DWORD WINAPI GetFileType(HANDLE);
+#if (_WIN32_WINNT >= 0x0600)
+/* http://msdn.microsoft.com/en-us/library/aa364962%28VS.85%29.aspx */
+WINBASEAPI DWORD WINAPI GetFinalPathNameByHandleA(HANDLE,LPSTR,DWORD,DWORD);
+WINBASEAPI DWORD WINAPI GetFinalPathNameByHandleW(HANDLE,LPWSTR,DWORD,DWORD);
+#endif
 #define GetFreeSpace(w) (0x100000L)
 WINBASEAPI DWORD WINAPI GetFullPathNameA(LPCSTR,DWORD,LPSTR,LPSTR*);
 WINBASEAPI DWORD WINAPI GetFullPathNameW(LPCWSTR,DWORD,LPWSTR,LPWSTR*);
@@ -1713,6 +1857,9 @@ WINBASEAPI BOOL IsProcessInJob(HANDLE,HANDLE,PBOOL);
 WINBASEAPI BOOL WINAPI IsProcessorFeaturePresent(DWORD);
 WINBASEAPI BOOL WINAPI IsSystemResumeAutomatic(void);
 WINBASEAPI BOOL WINAPI IsTextUnicode(PCVOID,int,LPINT);
+#if (_WIN32_WINNT >= 0x0500)
+WINBASEAPI BOOL WINAPI IsTokenRestricted(HANDLE);
+#endif
 WINBASEAPI BOOL WINAPI IsValidAcl(PACL);
 WINBASEAPI BOOL WINAPI IsValidSecurityDescriptor(PSECURITY_DESCRIPTOR);
 WINBASEAPI BOOL WINAPI IsValidSid(PSID);
@@ -1777,6 +1924,10 @@ WINBASEAPI BOOL WINAPI MoveFileA(LPCSTR,LPCSTR);
 WINBASEAPI BOOL WINAPI MoveFileExA(LPCSTR,LPCSTR,DWORD);
 WINBASEAPI BOOL WINAPI MoveFileExW(LPCWSTR,LPCWSTR,DWORD);
 WINBASEAPI BOOL WINAPI MoveFileW(LPCWSTR,LPCWSTR);
+#if (_WIN32_WINNT >= 0x0500)
+WINBASEAPI BOOL WINAPI MoveFileWithProgressA(LPCSTR,LPCSTR,LPPROGRESS_ROUTINE,LPVOID,DWORD);
+WINBASEAPI BOOL WINAPI MoveFileWithProgressW(LPCWSTR,LPCWSTR,LPPROGRESS_ROUTINE,LPVOID,DWORD);
+#endif
 WINBASEAPI int WINAPI MulDiv(int,int,int);
 WINBASEAPI BOOL WINAPI NotifyChangeEventLog(HANDLE,HANDLE);
 WINBASEAPI BOOL WINAPI ObjectCloseAuditAlarmA(LPCSTR,PVOID,BOOL);
@@ -2002,7 +2153,7 @@ WINBASEAPI BOOL WINAPI UnlockFile(HANDLE,DWORD,DWORD,DWORD,DWORD);
 WINBASEAPI BOOL WINAPI UnlockFileEx(HANDLE,DWORD,DWORD,DWORD,LPOVERLAPPED);
 #define UnlockResource(h) (h)
 #define UnlockSegment(w) GlobalUnfix((HANDLE)(w)) /* Obsolete: Has no effect. */
-WINBASEAPI BOOL WINAPI UnmapViewOfFile(PVOID);
+WINBASEAPI BOOL WINAPI UnmapViewOfFile(LPCVOID);
 #if (_WIN32_WINNT >= 0x0500)
 WINBASEAPI BOOL WINAPI UnregisterWait(HANDLE);
 WINBASEAPI BOOL WINAPI UnregisterWaitEx(HANDLE,HANDLE);
@@ -2096,6 +2247,9 @@ typedef PCACTCTXW PCACTCTX;
 #define CreateProcess CreateProcessW
 #define CreateProcessAsUser CreateProcessAsUserW
 #define CreateSemaphore CreateSemaphoreW
+#if (_WIN32_WINNT >= 0x0600)
+#define CreateSymbolicLink CreateSymbolicLinkW
+#endif
 #define CreateWaitableTimer CreateWaitableTimerW
 #define DefineDosDevice DefineDosDeviceW
 #define DeleteFile DeleteFileW
@@ -2149,6 +2303,9 @@ typedef PCACTCTXW PCACTCTX;
 #define GetFileAttributes GetFileAttributesW
 #define GetFileSecurity GetFileSecurityW
 #define GetFileAttributesEx GetFileAttributesExW
+#if (_WIN32_WINNT >= 0x0600)
+#define GetFinalPathNameByHandle GetFinalPathNameByHandleW
+#endif
 #define GetFullPathName GetFullPathNameW
 #define GetLogicalDriveStrings GetLogicalDriveStringsW
 #if (_WIN32_WINNT >= 0x0500 || _WIN32_WINDOWS >= 0x0410)
@@ -2206,6 +2363,9 @@ typedef PCACTCTXW PCACTCTX;
 #define lstrlen lstrlenW
 #define MoveFile MoveFileW
 #define MoveFileEx MoveFileExW
+#if (_WIN32_WINNT >= 0x0500)
+#define MoveFileWithProgress MoveFileWithProgressW
+#endif
 #define ObjectCloseAuditAlarm ObjectCloseAuditAlarmW
 #define ObjectDeleteAuditAlarm ObjectDeleteAuditAlarmW
 #define ObjectOpenAuditAlarm ObjectOpenAuditAlarmW
@@ -2292,6 +2452,9 @@ typedef PCACTCTXA PCACTCTX;
 #define CreateProcess CreateProcessA
 #define CreateProcessAsUser CreateProcessAsUserA
 #define CreateSemaphore CreateSemaphoreA
+#if (_WIN32_WINNT >= 0x0600)
+#define CreateSymbolicLink CreateSymbolicLinkA
+#endif
 #define CreateWaitableTimer CreateWaitableTimerA
 #define DefineDosDevice DefineDosDeviceA
 #define DeleteFile DeleteFileA
@@ -2344,6 +2507,9 @@ typedef PCACTCTXA PCACTCTX;
 #define GetFileAttributes GetFileAttributesA
 #define GetFileSecurity GetFileSecurityA
 #define GetFileAttributesEx GetFileAttributesExA
+#if (_WIN32_WINNT >= 0x0600)
+#define GetFinalPathNameByHandle GetFinalPathNameByHandleA
+#endif
 #define GetFullPathName GetFullPathNameA
 #define GetLogicalDriveStrings GetLogicalDriveStringsA
 #if (_WIN32_WINNT >= 0x0500 || _WIN32_WINDOWS >= 0x0410)
@@ -2401,6 +2567,9 @@ typedef PCACTCTXA PCACTCTX;
 #define lstrlen lstrlenA
 #define MoveFile MoveFileA
 #define MoveFileEx MoveFileExA
+#if (_WIN32_WINNT >= 0x0500)
+#define MoveFileWithProgress MoveFileWithProgressA
+#endif
 #define ObjectCloseAuditAlarm ObjectCloseAuditAlarmA
 #define ObjectDeleteAuditAlarm ObjectDeleteAuditAlarmA
 #define ObjectOpenAuditAlarm ObjectOpenAuditAlarmA

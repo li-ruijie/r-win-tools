@@ -304,13 +304,26 @@ _CRTIMP double __cdecl __MINGW_NOTHROW	atof	(const char*);
 _CRTIMP int __cdecl __MINGW_NOTHROW	atoi	(const char*);
 _CRTIMP long __cdecl __MINGW_NOTHROW 	atol	(const char*);
 #if !defined (__STRICT_ANSI__)
+_CRTIMP double __cdecl __MINGW_NOTHROW	_wtof (const wchar_t *);
 _CRTIMP int __cdecl __MINGW_NOTHROW	_wtoi (const wchar_t *);
 _CRTIMP long __cdecl __MINGW_NOTHROW _wtol (const wchar_t *);
 #endif
-_CRTIMP double __cdecl __MINGW_NOTHROW	strtod	(const char*, char**);
 #if !defined __NO_ISOCEXT  /*  in libmingwex.a */
+double __cdecl __MINGW_NOTHROW __strtod (const char*, char**);
+#ifdef __cplusplus
+/* We require a function with external linkage. */
+#else
+static
+#endif /* Not __cplusplus */
+__inline__ double __cdecl __MINGW_NOTHROW
+strtod (const char* __restrict__ __nptr, char** __restrict__ __endptr)
+{
+  return __strtod(__nptr, __endptr);
+}
 float __cdecl __MINGW_NOTHROW strtof (const char * __restrict__, char ** __restrict__);
 long double __cdecl __MINGW_NOTHROW strtold (const char * __restrict__, char ** __restrict__);
+#else
+_CRTIMP double __cdecl __MINGW_NOTHROW	strtod	(const char*, char**);
 #endif /* __NO_ISOCEXT */
 
 _CRTIMP long __cdecl __MINGW_NOTHROW	strtol	(const char*, char**, int);
@@ -404,7 +417,6 @@ _onexit_t __cdecl __MINGW_NOTHROW _onexit( _onexit_t );
 _CRTIMP int __cdecl __MINGW_NOTHROW	_putenv	(const char*);
 _CRTIMP void __cdecl __MINGW_NOTHROW	_searchenv (const char*, const char*, char*);
 
-
 _CRTIMP char* __cdecl __MINGW_NOTHROW	_ecvt (double, int, int*, int*);
 _CRTIMP char* __cdecl __MINGW_NOTHROW	_fcvt (double, int, int*, int*);
 _CRTIMP char* __cdecl __MINGW_NOTHROW	_gcvt (double, int, char*);
@@ -428,39 +440,44 @@ _CRTIMP __int64 __cdecl __MINGW_NOTHROW	_wtoi64(const wchar_t *);
 _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW _i64tow(__int64, wchar_t *, int);
 _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW _ui64tow(unsigned __int64, wchar_t *, int);
 
-
 _CRTIMP unsigned int __cdecl __MINGW_NOTHROW _rotl(unsigned int, int) __MINGW_ATTRIB_CONST;
 _CRTIMP unsigned int __cdecl __MINGW_NOTHROW _rotr(unsigned int, int) __MINGW_ATTRIB_CONST;
 _CRTIMP unsigned long __cdecl __MINGW_NOTHROW _lrotl(unsigned long, int) __MINGW_ATTRIB_CONST;
 _CRTIMP unsigned long __cdecl __MINGW_NOTHROW _lrotr(unsigned long, int) __MINGW_ATTRIB_CONST;
 
 _CRTIMP int __cdecl __MINGW_NOTHROW _set_error_mode (int);
-#define _OUT_TO_DEFAULT	0
-#define _OUT_TO_STDERR	1
-#define _OUT_TO_MSGBOX	2
-#define _REPORT_ERRMODE	3
 
-#if __MSVCRT_VERSION__ >= 0x800
-#ifndef _INTPTR_T_DEFINED
-#define _INTPTR_T_DEFINED
-#ifdef _WIN64
-  typedef __int64 intptr_t;
-#else
-  typedef int intptr_t;
-#endif
-#endif
+# define _OUT_TO_DEFAULT	0
+# define _OUT_TO_STDERR 	1
+# define _OUT_TO_MSGBOX 	2
+# define _REPORT_ERRMODE	3
+
+# if __MSVCRT_VERSION__ >= 0x800
+#  ifndef _UINTPTR_T_DEFINED
+#   define _UINTPTR_T_DEFINED
+#   ifdef _WIN64
+      typedef unsigned __int64 uintptr_t;
+#   else
+      typedef unsigned int uintptr_t;
+#   endif
+#  endif
+
 _CRTIMP unsigned int __cdecl __MINGW_NOTHROW _set_abort_behavior (unsigned int, unsigned int);
-/* These masks work with msvcr80.dll version 8.0.50215.44 (a beta release).  */
-#define _WRITE_ABORT_MSG 1
-#define _CALL_REPORTFAULT 2
 
-typedef void (* _invalid_parameter_handler) (const wchar_t *,
-					     const wchar_t *,
-					     const wchar_t *,
-					     unsigned int,
-					     uintptr_t);
+/* These masks work with msvcr80.dll version 8.0.50215.44 (a beta release).  */
+#  define _WRITE_ABORT_MSG	1
+#  define _CALL_REPORTFAULT	2
+
+typedef void
+(* _invalid_parameter_handler) (
+    const wchar_t *,
+    const wchar_t *,
+    const wchar_t *,
+    unsigned int,
+    uintptr_t);
 _invalid_parameter_handler _set_invalid_parameter_handler (_invalid_parameter_handler);
-#endif /* __MSVCRT_VERSION__ >= 0x800 */
+
+# endif /* __MSVCRT_VERSION__ >= 0x800 */
 #endif /* __MSVCRT__ */
 
 #ifndef	_NO_OLDNAMES
@@ -486,7 +503,7 @@ _CRTIMP char* __cdecl __MINGW_NOTHROW	gcvt (double, int, char*);
 
 /* C99 name for _exit */
 void __cdecl __MINGW_NOTHROW _Exit(int) __MINGW_ATTRIB_NORETURN;
-#ifndef __STRICT_ANSI__   /* inline using non-ansi functions */
+#if !defined __NO_INLINE__ && !defined __STRICT_ANSI__
 __CRT_INLINE void __cdecl __MINGW_NOTHROW _Exit(int __status)
 	{  _exit (__status); }
 #endif 
@@ -496,8 +513,10 @@ typedef struct { long long quot, rem; } lldiv_t;
 lldiv_t	__cdecl __MINGW_NOTHROW lldiv (long long, long long) __MINGW_ATTRIB_CONST;
 
 long long __cdecl __MINGW_NOTHROW llabs(long long);
+#ifndef __NO_INLINE__
 __CRT_INLINE long long __cdecl __MINGW_NOTHROW llabs(long long _j)
   {return (_j >= 0 ? _j : -_j);}
+#endif
 
 long long  __cdecl __MINGW_NOTHROW strtoll (const char* __restrict__, char** __restrict, int);
 unsigned long long  __cdecl __MINGW_NOTHROW strtoull (const char* __restrict__, char** __restrict__, int);
@@ -513,6 +532,7 @@ wchar_t* __cdecl __MINGW_NOTHROW lltow (long long, wchar_t *, int);
 wchar_t* __cdecl __MINGW_NOTHROW ulltow (unsigned long long, wchar_t *, int);
 
   /* inline using non-ansi functions */
+#ifndef __NO_INLINE__
 __CRT_INLINE long long  __cdecl __MINGW_NOTHROW atoll (const char * _c)
 	{ return _atoi64 (_c); }
 __CRT_INLINE char*  __cdecl __MINGW_NOTHROW lltoa (long long _n, char * _c, int _i)
@@ -525,6 +545,7 @@ __CRT_INLINE wchar_t*  __cdecl __MINGW_NOTHROW lltow (long long _n, wchar_t * _w
 	{ return _i64tow (_n, _w, _i); } 
 __CRT_INLINE wchar_t*  __cdecl __MINGW_NOTHROW ulltow (unsigned long long _n, wchar_t * _w, int _i)
 	{ return _ui64tow (_n, _w, _i); } 
+#endif /* (__NO_INLINE__) */
 #endif /* (__STRICT_ANSI__)  */
 
 #endif /* __MSVCRT__ */
