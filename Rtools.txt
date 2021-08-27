@@ -50,22 +50,22 @@ This installer includes the MinGW-64 version of gcc pre-4.6.3, compiled by
 Brian Ripley, obtained from his http://www.stats.ox.ac.uk/pub/Rtools/
 web page as multi.zip.  It also contains version 2.0.1 of their toolchain.
 
-The Cygwin tools and DLLs were updated on March 25, 2011.  They are taken from
+The Cygwin tools and DLLs were updated on November 19, 2013.  They are taken from
     
-    base-cygwin 3.1-1
+    base-cygwin 3.3-1
     coreutils 8.15-1
-    cygwin 1.7.15-1
+    cygwin 1.7.25-1
     diffutils 3.2-1
-    findutils 4.5.9-2
-    gawk 4.0.1-1
-    grep 2.6.3-1
+    findutils 4.5.11-1
+    gawk 4.1.0-1
+    grep 2.14-3
     gzip 1.4-1
-    texinfo 4.13-4
+    texinfo 5.2-1
     
 The bitmap libraries are based on the following versions:
 
     jpegsrc.v9
-    libpng-1.5.13
+    libpng-1.6.9
     tiff-4.0.3
     
 Tcl/Tk is version 8.5.8.
