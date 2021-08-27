@@ -21,6 +21,8 @@ in the path specification.
 
 zip, unzip from the Info-ZIP collection.
 
+texinfo5 (Perl source) is compiled from the sources.
+
 Please note that find and sort have the same names as Windows
 utilities; if you want to access the Windows ones while ours are on
 the path, you could rename our utilities and edit the FIND and SORT
