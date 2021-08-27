@@ -1,0 +1,17 @@
+%FILES%
+mingw64/
+mingw64/bin/
+mingw64/bin/fix-qdf
+mingw64/bin/qpdf.exe
+mingw64/bin/qpdf21.dll
+mingw64/bin/zlib-flate.exe
+mingw64/share/
+mingw64/share/doc/
+mingw64/share/doc/qpdf/
+mingw64/share/doc/qpdf/qpdf-manual.html
+mingw64/share/doc/qpdf/qpdf-manual.pdf
+mingw64/share/doc/qpdf/stylesheet.css
+mingw64/share/licenses/
+mingw64/share/licenses/qpdf/
+mingw64/share/licenses/qpdf/Artistic-2.0
+

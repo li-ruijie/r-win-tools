@@ -1,0 +1,7 @@
+##
+## Upstream MSYS2 repository
+##
+Server = http://repo.msys2.org/msys/$arch/
+Server = https://sourceforge.net/projects/msys2/files/REPOS/MSYS2/$arch/
+Server = https://www2.futureware.at/~nickoe/msys2-mirror/msys/$arch/
+SigLevel = Never

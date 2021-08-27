@@ -1,0 +1,8 @@
+%FILES%
+etc/
+etc/pacman.d/
+etc/pacman.d/rtools.mingw32
+etc/pacman.d/rtools.mingw64
+etc/pacman.d/rtools.msys
+etc/pacman.d/rtools.ucrt64
+

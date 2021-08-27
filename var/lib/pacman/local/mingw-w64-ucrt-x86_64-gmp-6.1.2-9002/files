@@ -1,0 +1,14 @@
+%FILES%
+ucrt64/
+ucrt64/include/
+ucrt64/include/gmp.h
+ucrt64/include/gmpxx.h
+ucrt64/lib/
+ucrt64/lib/libgmp.a
+ucrt64/lib/libgmpxx.a
+ucrt64/share/
+ucrt64/share/info/
+ucrt64/share/info/gmp.info-1.gz
+ucrt64/share/info/gmp.info-2.gz
+ucrt64/share/info/gmp.info.gz
+
