@@ -1,4 +1,4 @@
-                      Rtools Collection 3.3.0.1959
+                      Rtools Collection 3.4.0.1964
 
 This is the Rtools.txt file, which will be installed in the main
 Rtools directory. See also the README.txt file there, which describes
@@ -58,8 +58,7 @@ to build the manuals.
 
                                VERSIONS
 			
-This installer includes a multilib build of gcc 4.6.3, compiled by
-Brian Ripley, and separate 32- and 64-bit builds of gcc 4.9.3 and 
+This installer includes separate 32- and 64-bit builds of gcc 4.9.3 and 
 mingw-w64 v3 compiled by Jeroen Ooms and others.  For use with the latter
 it also includes a copy of libicu55.
 
