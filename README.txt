@@ -5,7 +5,7 @@ cat cp cut date diff echo egrep expr find, grep gzip ls makeinfo mkdir
 mv rm rsync sed sh sort texindex touch
 
 These are extracted from the cygwin collection
-(http://sources.redhat.com/cygwin and several mirrors).
+(http://sources.redhat.com/cygwin and several mirrors).  
 
 make is compiled from the sources, altered to use sh.exe in the path 
 if this exists (rather than /bin/sh.exe).
