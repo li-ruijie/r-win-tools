@@ -2,10 +2,13 @@ This file describes the Rtools/bin collection, a set of tools to help
 build and test R for Windows.
 
 cat cp cut date diff echo egrep expr find, grep gzip ls makeinfo mkdir
-mv rm rsync sed sh sort texindex touch
+mv rm rsync sed sort texindex touch
 
 These are extracted from the cygwin collection
 (http://sources.redhat.com/cygwin and several mirrors).  
+
+sh is an older version of the Cygwin sh, from before they started
+to require Unix-style line endings in scripts.
 
 make is compiled from the sources, altered to use sh.exe in the path 
 if this exists (rather than /bin/sh.exe).
@@ -27,7 +30,7 @@ tested:  we prefer the Rtools utilities to the Windows ones.
 Extras
 ======
 
-Also included are basename, comm, gawk and wc (which used to be
+Also included are basename, comm, gawk, head and wc (which used to be
 needed), as well as cmp, ln, od, rmdir, tr and uniq which are needed
 by some configure scripts.
 

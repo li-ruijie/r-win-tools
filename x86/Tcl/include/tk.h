@@ -12,7 +12,7 @@
  * See the file "license.terms" for information on usage and redistribution of
  * this file, and for a DISCLAIMER OF ALL WARRANTIES.
  *
- * RCS: @(#) $Id: tk.h,v 1.109 2008/03/28 18:13:39 dgp Exp $
+ * RCS: @(#) $Id: tk.h,v 1.109.2.10 2008/12/21 21:02:58 dgp Exp $
  */
 
 #ifndef _TK
@@ -53,10 +53,10 @@ extern "C" {
 #define TK_MAJOR_VERSION	8
 #define TK_MINOR_VERSION	5
 #define TK_RELEASE_LEVEL	TCL_FINAL_RELEASE
-#define TK_RELEASE_SERIAL	2
+#define TK_RELEASE_SERIAL	6
 
 #define TK_VERSION		"8.5"
-#define TK_PATCH_LEVEL		"8.5.2"
+#define TK_PATCH_LEVEL		"8.5.6"
 
 /*
  * A special definition used to allow this header file to be included from
@@ -627,17 +627,15 @@ typedef struct Tk_GeomMgr {
  *---------------------------------------------------------------------------
  */
 
-#define VirtualEvent	    (LASTEvent)
-#define ActivateNotify	    (LASTEvent + 1)
-#define DeactivateNotify    (LASTEvent + 2)
-#define MouseWheelEvent     (LASTEvent + 3)
-#define TK_LASTEVENT	    (LASTEvent + 4)
+#define VirtualEvent	    (MappingNotify + 1)
+#define ActivateNotify	    (MappingNotify + 2)
+#define DeactivateNotify    (MappingNotify + 3)
+#define MouseWheelEvent     (MappingNotify + 4)
+#define TK_LASTEVENT	    (MappingNotify + 5)
 
 #define MouseWheelMask	    (1L << 28)
-
 #define ActivateMask	    (1L << 29)
 #define VirtualEventMask    (1L << 30)
-#define TK_LASTEVENT	    (LASTEvent + 4)
 
 /*
  * A virtual event shares most of its fields with the XKeyEvent and
@@ -724,6 +722,8 @@ typedef XActivateDeactivateEvent XDeactivateEvent;
     (((Tk_FakeWin *) (tkwin))->flags & TK_WIN_MANAGED)
 #define Tk_TopWinHierarchy(tkwin) \
     (((Tk_FakeWin *) (tkwin))->flags & TK_TOP_HIERARCHY)
+#define Tk_IsManageable(tkwin) \
+    (((Tk_FakeWin *) (tkwin))->flags & TK_WM_MANAGEABLE)
 #define Tk_ReqWidth(tkwin)	(((Tk_FakeWin *) (tkwin))->reqWidth)
 #define Tk_ReqHeight(tkwin)	(((Tk_FakeWin *) (tkwin))->reqHeight)
 /* Tk_InternalBorderWidth is deprecated */
@@ -859,6 +859,8 @@ typedef struct Tk_FakeWin {
  * TK_PROP_PROPCHANGE		1 means that PropertyNotify events in the
  *				window's children should propagate up to this
  *				window.
+ * TK_WM_MANAGEABLE		1 marks a window as capable of being converted
+ *				into a toplevel using [wm manage].
  */
 
 #define TK_MAPPED		1
@@ -880,6 +882,7 @@ typedef struct Tk_FakeWin {
 #define TK_WIN_MANAGED		0x10000
 #define TK_TOP_HIERARCHY	0x20000
 #define TK_PROP_PROPCHANGE	0x40000
+#define TK_WM_MANAGEABLE	0x80000
 
 /*
  *--------------------------------------------------------------
@@ -1486,7 +1489,7 @@ typedef struct Tk_ElementSpec {
 
 const char *		Tk_InitStubs _ANSI_ARGS_((Tcl_Interp *interp,
 			    const char *version, int exact));
-const char *		Tk_PkgInitStubsCheck _ANSI_ARGS_((Tcl_Interp *interp,
+EXTERN const char *	Tk_PkgInitStubsCheck _ANSI_ARGS_((Tcl_Interp *interp,
 			    const char *version, int exact));
 
 #ifndef USE_TK_STUBS
