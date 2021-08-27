@@ -80,7 +80,7 @@ The Cygwin tools and DLLs were updated on March 25, 2011.  They are taken from
 The bitmap libraries are based on the following versions:
 
     jpegsrc.v8c
-    libpng-1.5.1
+    libpng-1.5.4
     tiff-3.9.1
     
 Tcl/Tk is version 8.5.8.
