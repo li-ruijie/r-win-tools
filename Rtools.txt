@@ -1,9 +1,11 @@
-                      Rtools Collection @version@
+                      Rtools Collection 3.3.0.1959
 
 This is the Rtools.txt file, which will be installed in the main
 Rtools directory. See also the README.txt file there, which describes
 the origin of some of the tools. The tools installed in the
-Rtools\gcc-4.6.3 directory are from the MinGW-w64 distribution.  
+Rtools\mingw_32, and Rtools\mingw_64 directories 
+are from the MinGW-w64 distribution.  
+ 
 
                                 CYGWIN
 			  
@@ -56,9 +58,10 @@ to build the manuals.
 
                                VERSIONS
 			
-This installer includes the MinGW-64 version of gcc pre-4.6.3, compiled by
-Brian Ripley, obtained from his http://www.stats.ox.ac.uk/pub/Rtools/
-web page as multi.zip.  It also contains version 2.0.1 of their toolchain.
+This installer includes a multilib build of gcc 4.6.3, compiled by
+Brian Ripley, and separate 32- and 64-bit builds of gcc 4.9.3 and 
+mingw-w64 v3 compiled by Jeroen Ooms and others.  For use with the latter
+it also includes a copy of libicu55.
 
 The Cygwin tools and DLLs were updated on November 19, 2013.  They are 
 32 bit versions taken from
@@ -73,11 +76,6 @@ The Cygwin tools and DLLs were updated on November 19, 2013.  They are
     gzip 1.6-1
     texinfo 4.13 (used for R 3.1.x and earlier) and 5.2 (used for R 3.2.x and later).
     
-The bitmap libraries (used only in R 3.1.x and earlier) are based on the following versions:
-
-    jpegsrc.v9
-    libpng-1.6.9
-    tiff-4.0.3
     
 Tcl/Tk is version 8.5.8.
 

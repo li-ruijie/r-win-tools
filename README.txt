@@ -1,7 +1,7 @@
 This file describes the Rtools/bin collection, a set of tools to help
 build and test R for Windows.
 
-basename cat cmp comm cp cut date diff du echo expr gzip ls makeinfo
+basename cat cmp comm cp cut cygpath date diff du echo expr gzip ls makeinfo
 mkdir mv rm rsync sed sort texindex touch uniq
 
 These are extracted from the cygwin collection
@@ -22,6 +22,9 @@ in the path specification.
 zip, unzip from the Info-ZIP collection.
 
 texinfo5 (Perl source) is compiled from the sources.
+
+gdb and gdb64 were compiled for inclusion with the gcc 4.6.3 compiler;
+both 32 and 64 bit versions are named gdb with the gcc 4.9.3 compiler.
 
 Please note that find and sort have the same names as Windows
 utilities; if you want to access the Windows ones while ours are on
