@@ -63,7 +63,9 @@ http://sourceforge.net/projects/mingw/files/:
      mingwrt-3.18-mingw32-dll.tar.gz
      w32api-3.15-1-mingw32-dev.tar.lzma
     
-Vanilla Perl is from build 7 of that package.
+It also includes the MinGW-64 version of gcc pre-4.6.3, compiled by
+Brian Ripley, obtained from his http://www.stats.ox.ac.uk/pub/Rtools/
+web page as multi.zip.
 
 The Cygwin tools and DLLs were updated on March 25, 2011.  They are taken from
     
@@ -80,7 +82,7 @@ The Cygwin tools and DLLs were updated on March 25, 2011.  They are taken from
 The bitmap libraries are based on the following versions:
 
     jpegsrc.v8c
-    libpng-1.5.4
+    libpng-1.5.8
     tiff-3.9.1
     
 Tcl/Tk is version 8.5.8.

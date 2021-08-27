@@ -45,10 +45,11 @@ Sources
 
 The current version of this archive will be at
 
-http://www.murdoch-sutherland.com/Rtools
+<CRAN mirror>/bin/windows/Rtools
 
-and that directory also contains all the sources for the GPL-ed 
-components included here.
+where <CRAN mirror> is your local CRAN mirror from the list at
+http://cran.r-project.org/mirrors.html.
+
 
 License
 =======
