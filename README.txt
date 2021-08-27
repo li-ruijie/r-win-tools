@@ -5,7 +5,10 @@ cat cp cut date diff echo egrep expr find, grep gzip ls makeinfo mkdir
 mv rm rsync sed sort texindex touch
 
 These are extracted from the cygwin collection
-(http://sources.redhat.com/cygwin and several mirrors).  
+(http://sources.redhat.com/cygwin and several mirrors). 
+
+file is compiled from the sources, to look for the "magic" file in 
+the same directory as file.exe.
 
 sh is an older version of the Cygwin sh, from before they started
 to require Unix-style line endings in scripts.
